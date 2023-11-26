@@ -1,31 +1,25 @@
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
+import Button from "./ui/Button";
+import Input from "./ui/Input";
+import Heading from "./ui/Heading";
 
-const H1 = styled.h1`
-  font-size: 20px;
-  font-weight: bold;
-  letter-spacing: 5px;
-  background-color: yellow;
-  text-align: center;
-`;
 
-const Button = styled.button`
-  padding: 10px 8px;
-  font-size: 15px;
-  background-color: blue;
-  color: white;
-  outline: none;
-  border: none;
-  border-radius: 5px;
-`;
 
 function App() {
   return (
     <>
       <GlobalStyles />
       <div>
-        <H1>Heading 1</H1>
-        <Button>Click me</Button>
+        <Heading as="h1">Heading 1</Heading>
+        <Heading as="h2">Heading 2</Heading>
+        <Heading as="h3">Heading 3</Heading>
+        <Button>Click me 1</Button>
+        <Button>Click me 2</Button>
+        <div>
+          <Input type="text" placeholder="Enter your input" />
+          <Input type="password" placeholder="Enter your password" />
+        </div>
       </div>
     </>
   );
