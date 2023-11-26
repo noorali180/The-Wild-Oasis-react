@@ -18,4 +18,8 @@ const Row = styled.div`
     `}
 `;
 
+Row.defaultProps = {
+  type: "horizontal",
+};
+
 export default Row;

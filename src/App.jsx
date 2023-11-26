@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
@@ -15,7 +14,7 @@ function App() {
         <Heading as="h2">Heading 2</Heading>
         <Heading as="h3">Heading 3</Heading>
         <Button>Click me 1</Button>
-        <Button>Click me 2</Button>
+        <Button variation ="danger" size="small">Click me 2</Button>
         <div>
           <Input type="text" placeholder="Enter your input" />
           <Input type="password" placeholder="Enter your password" />
