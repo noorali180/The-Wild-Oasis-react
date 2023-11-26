@@ -3,7 +3,7 @@ import Row from "../ui/Row";
 
 function Dashboard() {
   return (
-    <Row>
+    <Row type="vertical">
       <Heading as="h1">Dashboard</Heading>
       <p>TEST</p>
     </Row>
