@@ -15,6 +15,10 @@ const Main = styled.main`
   padding: 6rem 4.8rem 6.4rem;
   max-height: 90vh;
   overflow-y: scroll;
+
+  &::-webkit-scrollbar{
+    display: none;
+  }
 `;
 
 const Container = styled.div`

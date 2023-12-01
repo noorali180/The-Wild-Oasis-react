@@ -48,7 +48,7 @@ function CabinRow({ cabin }) {
   const queryClient = useQueryClient();
 
   // accessing the mutate function of useMutation to manipulate or change data...
-  const { isLoading: isDeleting, mutate } = useMutation({
+  const { isPending: isDeleting, mutate } = useMutation({
     mutationFn: deleteCabin,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cabins"] });

@@ -53,9 +53,17 @@ const Button = styled.button`
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
+  transition: all .3s ease-in;
 
   ${(props) => variations[props.variation]}
   ${(props) => sizes[props.size]}
+
+  &:disabled{
+    /* background-color: var(--color-grey-100);
+    color: var(--color-grey-700); */
+    opacity: .5;
+    cursor: not-allowed;
+  }
 
 `;
 
