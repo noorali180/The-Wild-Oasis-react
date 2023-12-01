@@ -4,15 +4,15 @@ import CabinTable from "../features/cabins/CabinTable";
 
 function Cabins() {
   return (
-    <>
-      <Row type="horizontal">
+    <Row type="vertical">
+      <Row>
         <Heading as="h1">All cabins</Heading>
         <p>filter/sort</p>
       </Row>
       <Row>
         <CabinTable />
       </Row>
-    </>
+    </Row>
   );
 }
 
