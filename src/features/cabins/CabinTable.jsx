@@ -42,7 +42,6 @@ function CabinTable() {
   if(error) return console.error(error);
 
   return (
-    <>
       <Table role="table">
         <TableHeader role="row">
           <div></div>
@@ -56,7 +55,6 @@ function CabinTable() {
           <CabinRow cabin={cabin}key={cabin.id} />
         ))}
       </Table>
-    </>
   );
 }
 
