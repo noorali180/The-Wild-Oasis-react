@@ -6,6 +6,9 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createCabin } from "../../services/apiCabins";
+import toast from "react-hot-toast";
 
 const FormRow = styled.div`
   display: grid;
@@ -44,27 +47,60 @@ const Error = styled.span`
 `;
 
 function CreateCabinForm() {
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, reset } = useForm();
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: createCabin,
+    onSuccess: () => {
+      toast.success("new cabin has successfully created");
+      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+      reset(); // this will reset the form once cabin is successfully created...
+    },
+    onError: (err) => toast.error(err.message),
+  });
 
   function onSubmit(data) {
-    console.log(data);
+    const newCabin = {
+      name: data.name,
+      maxCapacity: +data.maxCapacity,
+      discount: +data.discount,
+      regularPrice: +data.regularPrice,
+      description: data.description || null,
+      image: data.image || null,
+    };
+    // we are passing the form data to function to create a new cabin in our supabase database, because the form attachted with react-hook-form library hook have the exact same name of fields which are required in our database cabins table to create a new record...
+    mutate(newCabin);
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
-        <Input type="text" id="name" {...register("name")} />
+        <Input
+          type="text"
+          id="name"
+          {...register("name", { required: true })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="maxCapacity">Maximum capacity</Label>
-        <Input type="number" id="maxCapacity" {...register("maxCapacity")} />
+        <Input
+          type="number"
+          id="maxCapacity"
+          {...register("maxCapacity", { required: true })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="regularPrice">Regular price</Label>
-        <Input type="number" id="regularPrice" {...register("regurlarPrice")} />
+        <Input
+          type="number"
+          id="regularPrice"
+          {...register("regularPrice", { required: true })}
+        />
       </FormRow>
 
       <FormRow>
@@ -73,7 +109,7 @@ function CreateCabinForm() {
           type="number"
           id="discount"
           defaultValue={0}
-          {...register("discount")}
+          {...register("discount", { required: true })}
         />
       </FormRow>
 
@@ -89,11 +125,7 @@ function CreateCabinForm() {
 
       <FormRow>
         <Label htmlFor="image">Cabin photo</Label>
-        <FileInput
-          id="image"
-          accept="image/*"
-          {...register("image")}
-        />
+        <FileInput id="image" accept="image/*" {...register("image")} />
       </FormRow>
 
       <FormRow>
