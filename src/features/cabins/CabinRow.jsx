@@ -49,7 +49,7 @@ function CabinRow({ cabin }) {
   // accessing the mutate function of useMutation to manipulate or change data...
   const { isLoading: isDeleting, mutate } = useMutation({
     mutationFn: deleteCabin,
-    onSucess: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
   });
