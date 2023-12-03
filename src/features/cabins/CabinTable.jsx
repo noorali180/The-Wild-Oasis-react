@@ -5,6 +5,7 @@ import { getCabins } from "../../services/apiCabins";
 
 import Spinner from "../../ui/Spinner";
 import CabinRow from "../../features/cabins/CabinRow";
+import PageNotFound from "../../pages/PageNotFound";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -39,22 +40,25 @@ function CabinTable() {
 
   if (isLoading) return <Spinner />;
 
-  if(error) return console.error(error);
+  if (error) {
+    console.error(error);
+    return <PageNotFound />;
+  }
 
   return (
-      <Table role="table">
-        <TableHeader role="row">
-          <div></div>
-          <div>Cabin</div>
-          <div>Capacity</div>
-          <div>Price</div>
-          <div>Discount</div>
-          <div></div>
-        </TableHeader>
-        {cabins.map((cabin) => (
-          <CabinRow cabin={cabin}key={cabin.id} />
-        ))}
-      </Table>
+    <Table role="table">
+      <TableHeader role="row">
+        <div></div>
+        <div>Cabin</div>
+        <div>Capacity</div>
+        <div>Price</div>
+        <div>Discount</div>
+        <div></div>
+      </TableHeader>
+      {cabins.map((cabin) => (
+        <CabinRow cabin={cabin} key={cabin.id} />
+      ))}
+    </Table>
   );
 }
 
