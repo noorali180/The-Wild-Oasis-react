@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
@@ -42,7 +40,8 @@ function CreateCabinForm() {
       image: data.image || null,
     };
     // we are passing the form data to function to create a new cabin in our supabase database, because the form attachted with react-hook-form library hook have the exact same name of fields which are required in our database cabins table to create a new record...
-    mutate(newCabin);
+    // mutate(newCabin);
+    console.log(data);
   }
 
   function onError(errors) {
@@ -113,7 +112,7 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow label="Cabin photo">
-        <FileInput id="image" accept="image/*" type="file" {...register("image")} />
+        <FileInput id="image" accept="image/*" {...register("image")} />
       </FormRow>
 
       <FormRow>
