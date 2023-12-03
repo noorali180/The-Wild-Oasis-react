@@ -37,11 +37,10 @@ function CreateCabinForm() {
       discount: +data.discount,
       regularPrice: +data.regularPrice,
       description: data.description || null,
-      image: data.image || null,
+      image: data.image[0],
     };
     // we are passing the form data to function to create a new cabin in our supabase database, because the form attachted with react-hook-form library hook have the exact same name of fields which are required in our database cabins table to create a new record...
-    // mutate(newCabin);
-    console.log(data);
+    mutate(newCabin);
   }
 
   function onError(errors) {
