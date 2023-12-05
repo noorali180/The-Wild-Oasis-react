@@ -9,7 +9,9 @@ import { createCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 import FormRow from "./FormRow";
 
-function CreateCabinForm() {
+function CreateCabinForm({ cabinToEdit }) {
+  const { id: editId, ...editValues } = cabinToEdit;
+  const isEditSession = Boolean(editId);
   // Manage and controll Form...
   const {
     register,
@@ -17,7 +19,7 @@ function CreateCabinForm() {
     reset,
     formState: { errors },
     getValues,
-  } = useForm();
+  } = useForm({ defaultValues: isEditSession ? editValues : {} });
 
   // Manage and controll queries using react-query...
   const queryClient = useQueryClient();
@@ -41,7 +43,8 @@ function CreateCabinForm() {
       image: data.image[0],
     };
     // we are passing the form data to function to create a new cabin in our supabase database, because the form attachted with react-hook-form library hook have the exact same name of fields which are required in our database cabins table to create a new record...
-    mutate(newCabin);
+    // mutate(newCabin);
+    console.log(newCabin);
   }
 
   function onError(errors) {
@@ -115,7 +118,9 @@ function CreateCabinForm() {
         <FileInput
           id="image"
           accept="image/*"
-          {...register("image", { required: "This field is required" })}
+          {...register("image", {
+            required: isEditSession ? false : "This field is required",
+          })}
         />
       </FormRow>
 
@@ -125,7 +130,7 @@ function CreateCabinForm() {
           Cancel
         </Button>
         <Button type="submit" disabled={isCreating}>
-          Add cabin
+          {isEditSession ? "Edit cabin" : "Create new Cabin"}
         </Button>
       </FormRow>
     </Form>
