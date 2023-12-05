@@ -9,12 +9,13 @@ import FormRow from "./FormRow";
 
 import { useCreateCabin } from "./hooks/useCreateCabin";
 import { useEditCabin } from "./hooks/useEditCabin";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function CreateCabinForm({ cabinToEdit = {}, setShowEditForm }) {
   // custom hook for creating new cabins...
   const { isCreating, createCabin } = useCreateCabin();
   // custom hook for editing the existing cabins...
-  const { isEditing, editCabin } = useEditCabin;
+  const { isEditing, editCabin } = useEditCabin();
 
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
@@ -141,6 +142,7 @@ function CreateCabinForm({ cabinToEdit = {}, setShowEditForm }) {
           Cancel
         </Button>
         <Button type="submit" disabled={isWorking}>
+          {isWorking && <SpinnerMini />}
           {isEditSession ? "Edit cabin" : "Create new Cabin"}
         </Button>
       </FormRow>

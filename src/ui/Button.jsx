@@ -52,6 +52,10 @@ const Button = styled.button`
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   cursor: pointer;
   transition: all .3s ease-in;
 
