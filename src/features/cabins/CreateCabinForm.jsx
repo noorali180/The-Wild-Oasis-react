@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import FormRow from "./FormRow";
 
 function CreateCabinForm() {
+  // Manage and controll Form...
   const {
     register,
     handleSubmit,
@@ -18,8 +19,8 @@ function CreateCabinForm() {
     getValues,
   } = useForm();
 
+  // Manage and controll queries using react-query...
   const queryClient = useQueryClient();
-
   const { isPending: isCreating, mutate } = useMutation({
     mutationFn: createCabin,
     onSuccess: () => {
@@ -110,8 +111,12 @@ function CreateCabinForm() {
         />
       </FormRow>
 
-      <FormRow label="Cabin photo">
-        <FileInput id="image" accept="image/*" {...register("image")} />
+      <FormRow label="Cabin photo" error={errors?.image?.message}>
+        <FileInput
+          id="image"
+          accept="image/*"
+          {...register("image", { required: "This field is required" })}
+        />
       </FormRow>
 
       <FormRow>

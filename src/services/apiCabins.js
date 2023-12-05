@@ -21,7 +21,6 @@ export async function deleteCabin(id) {
 
   // 2. if there is no error, delete the image from bucket also...
   const imageName = data.image.slice(data.image.lastIndexOf("/") + 1);
-
   await supabase.storage.from("cabins").remove([imageName]);
 
   return data;
