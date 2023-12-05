@@ -1,17 +1,25 @@
+import { useForm } from "react-hook-form";
+
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createEditCabin } from "../../services/apiCabins";
-import toast from "react-hot-toast";
 import FormRow from "./FormRow";
 
+import { useCreateCabin } from "./hooks/useCreateCabin";
+import { useEditCabin } from "./hooks/useEditCabin";
+
 function CreateCabinForm({ cabinToEdit = {}, setShowEditForm }) {
+  // custom hook for creating new cabins...
+  const { isCreating, createCabin } = useCreateCabin();
+  // custom hook for editing the existing cabins...
+  const { isEditing, editCabin } = useEditCabin;
+
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
+
+  const isWorking = isEditing || isCreating; // to load spinner or disable button while editing a cabin or creating a new cabin...
 
   // Manage and controll Form...
   const {
@@ -21,30 +29,6 @@ function CreateCabinForm({ cabinToEdit = {}, setShowEditForm }) {
     formState: { errors },
     getValues,
   } = useForm({ defaultValues: isEditSession ? editValues : {} });
-
-  // Manage and controll queries using react-query...
-  const queryClient = useQueryClient();
-  const { isPending: isCreating, mutate: createCabin } = useMutation({
-    mutationFn: createEditCabin,
-    onSuccess: () => {
-      toast.success("New cabin successfully created");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      reset(); // this will reset the form once cabin is successfully created...
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
-  const { isPending: isEditing, mutate: editCabin } = useMutation({
-    mutationFn: ({ newCabin, id }) => createEditCabin(newCabin, id),
-    onSuccess: () => {
-      toast.success("Cabin successfully edited");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      setShowEditForm(false);
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
-  const isWorking = isEditing || isCreating;
 
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
@@ -58,8 +42,19 @@ function CreateCabinForm({ cabinToEdit = {}, setShowEditForm }) {
     };
     // we are passing the form data to function to create a new cabin in our supabase database, because the form attachted with react-hook-form library hook have the exact same name of fields which are required in our database cabins table to create a new record...
 
-    if (isEditSession) editCabin({ newCabin, id: editId });
-    else createCabin(newCabin);
+    // NOTE: we can also call onSuccess method in mutation function... and we also have access to data returned by the function...
+
+    if (isEditSession)
+      editCabin(
+        { newCabin, id: editId },
+        {
+          onSuccess: () => {
+            reset();
+            setShowEditForm(!setShowEditForm);
+          },
+        }
+      );
+    else createCabin(newCabin, { onSuccess: () => reset() });
   }
 
   return (
