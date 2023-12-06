@@ -11,7 +11,7 @@ import { useCreateCabin } from "./hooks/useCreateCabin";
 import { useEditCabin } from "./hooks/useEditCabin";
 import SpinnerMini from "../../ui/SpinnerMini";
 
-function CreateCabinForm({ cabinToEdit = {}, setShowEditForm }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   // custom hook for creating new cabins...
   const { isCreating, createCabin } = useCreateCabin();
   // custom hook for editing the existing cabins...
@@ -51,15 +51,24 @@ function CreateCabinForm({ cabinToEdit = {}, setShowEditForm }) {
         {
           onSuccess: () => {
             reset();
-            setShowEditForm(!setShowEditForm);
+            onCloseModal();
           },
         }
       );
-    else createCabin(newCabin, { onSuccess: () => reset() });
+    else
+      createCabin(newCabin, {
+        onSuccess: () => {
+          reset();
+          onCloseModal();
+        },
+      });
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           type="text"
@@ -138,7 +147,11 @@ function CreateCabinForm({ cabinToEdit = {}, setShowEditForm }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button type="submit" disabled={isWorking}>
