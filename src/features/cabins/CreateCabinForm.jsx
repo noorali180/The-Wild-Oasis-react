@@ -5,7 +5,7 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import FormRow from "./FormRow";
+import FormRow from "../../ui/FormRow";
 
 import { useCreateCabin } from "./hooks/useCreateCabin";
 import { useEditCabin } from "./hooks/useEditCabin";
