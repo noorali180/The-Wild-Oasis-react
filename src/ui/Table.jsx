@@ -75,7 +75,11 @@ function Table({ children, columns }) {
 function Header({ children }) {
   const { columns } = useContext(TableContext);
 
-  return <StyledHeader columns={columns}>{children}</StyledHeader>;
+  return (
+    <StyledHeader as="header" role="row" columns={columns}>
+      {children}
+    </StyledHeader>
+  );
 }
 
 function Row({ children }) {
@@ -88,8 +92,8 @@ function Row({ children }) {
   );
 }
 
-function Body({ children }) {
-  return <StyledBody>{children}</StyledBody>;
+function Body({ data, render }) {
+  return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
 Table.Header = Header;
