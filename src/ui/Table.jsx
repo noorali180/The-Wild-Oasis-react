@@ -53,12 +53,12 @@ const Footer = styled.footer`
   }
 `;
 
-// const Empty = styled.p`
-//   font-size: 1.6rem;
-//   font-weight: 500;
-//   text-align: center;
-//   margin: 2.4rem;
-// `;
+const Empty = styled.p`
+  font-size: 1.6rem;
+  font-weight: 500;
+  text-align: center;
+  margin: 2.4rem;
+`;
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -93,6 +93,9 @@ function Row({ children }) {
 }
 
 function Body({ data, render }) {
+  if (data.length === 0)
+    return <Empty>{"You have nothing to show right now ;)"}</Empty>;
+
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
