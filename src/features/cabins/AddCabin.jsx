@@ -1,7 +1,6 @@
 import Button from "../../ui/Button";
 import CreateCabinForm from "./CreateCabinForm";
 import Modal from "../../ui/Modal";
-import CabinTable from "./CabinTable";
 
 // function AddCabin() {
 //   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,21 +26,23 @@ import CabinTable from "./CabinTable";
 function AddCabin() {
   return (
     // API for compound component we have to build...
-    <Modal>
-      <Modal.Open opens="cabin-form">
-        <Button>Create a new cabin</Button>
-      </Modal.Open>
-      <Modal.Window name="cabin-form">
-        <CreateCabinForm />
-      </Modal.Window>
+    <div>
+      <Modal>
+        <Modal.Open opens="cabin-form">
+          <Button>Create a new cabin</Button>
+        </Modal.Open>
+        <Modal.Window name="cabin-form">
+          <CreateCabinForm />
+        </Modal.Window>
 
-      <Modal.Open opens="cabin-table">
+        {/* <Modal.Open opens="cabin-table">
         <Button>Open cabins</Button>
       </Modal.Open>
       <Modal.Window name="cabin-table">
         <CabinTable />
-      </Modal.Window>
-    </Modal>
+      </Modal.Window> */}
+      </Modal>
+    </div>
   );
 }
 
