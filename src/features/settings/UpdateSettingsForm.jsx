@@ -3,8 +3,9 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
+
 import { useUpdateSetting } from "./hooks/useUpdateSetting";
-import { useSettings } from "./hooks/usesettings";
+import { useSetting } from "./hooks/useSetting";
 
 function UpdateSettingsForm() {
   const {
@@ -16,7 +17,7 @@ function UpdateSettingsForm() {
       maxGuestsPerBooking,
       breakfastPrice,
     } = {},
-  } = useSettings();
+  } = useSetting();
   const { isUpdating, updateSetting } = useUpdateSetting();
 
   function handleEvent(e, field) {

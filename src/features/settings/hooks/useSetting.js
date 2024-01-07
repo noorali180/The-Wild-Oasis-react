@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSettings } from "../../../services/apiSettings";
+import { getSetting } from "../../../services/apiSettings";
 
 export function useSettings() {
   const {
@@ -8,7 +8,7 @@ export function useSettings() {
     data: settings,
   } = useQuery({
     queryKey: ["settings"],
-    queryFn: getSettings,
+    queryFn: getSetting,
   });
 
   return { isLoading, error, settings };
