@@ -98,7 +98,7 @@ function CabinRow({ cabin }) {
             </button>
           </Modal.Open>
           <Modal.Window name="edit-cabin">
-            <CreateCabinForm cabinToEdit={cabin} />
+            <CreateCabinForm cabinToEdit={cabin} previouseCabinImage={image} />
           </Modal.Window>
 
           <Modal.Open opens="confirm-delete">

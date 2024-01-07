@@ -11,7 +11,11 @@ import { useCreateCabin } from "./hooks/useCreateCabin";
 import { useEditCabin } from "./hooks/useEditCabin";
 import SpinnerMini from "../../ui/SpinnerMini";
 
-function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
+function CreateCabinForm({
+  cabinToEdit = {},
+  onCloseModal,
+  previouseCabinImage,
+}) {
   // custom hook for creating new cabins...
   const { isCreating, createCabin } = useCreateCabin();
   // custom hook for editing the existing cabins...
@@ -47,7 +51,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
 
     if (isEditSession)
       editCabin(
-        { newCabin, id: editId },
+        { newCabin, id: editId, previouseImage: previouseCabinImage },
         {
           onSuccess: () => {
             reset();

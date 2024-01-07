@@ -26,7 +26,11 @@ export async function deleteCabin(id) {
   return data;
 }
 
-export async function createEditCabin(newCabin, id = null) {
+export async function createEditCabin(
+  newCabin,
+  id = null,
+  previouseImage = null
+) {
   const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
 
   const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
@@ -37,11 +41,10 @@ export async function createEditCabin(newCabin, id = null) {
     ? newCabin.image
     : `${supabaseUrl}/storage/v1/object/public/cabins/${imageName}`;
 
+  //1. create and edit cabin
   let query = supabase.from("cabins");
 
-  //1. create and edit cabin
-
-  //NOTE: if here is no id insert a new cabin to database,
+  //NOTE: if there is no id insert a new cabin to database,
   if (!id) query = query.insert([{ ...newCabin, image: imagePath }]);
 
   //NOTE: if there is an id edit the cabin,
@@ -52,18 +55,29 @@ export async function createEditCabin(newCabin, id = null) {
 
   //2. upload image to bucket
   // if (hasImagePath) return data;
-  if (hasImagePath) return;
+  if (!hasImagePath) {
+    const { error: imgUploadingError } = await supabase.storage
+      .from("cabins")
+      .upload(imageName, newCabin.image);
 
-  const { error: imgUploadingError } = await supabase.storage
-    .from("cabins")
-    .upload(imageName, newCabin.image);
+    //3. if image is not uploaded then delete the created cabin.
+    if (imgUploadingError) {
+      await supabase.from("cabins").delete().eq("id", data.id);
+      throw new Error(
+        "Cabin image could not be uploaded and the cabin was not created"
+      );
+    }
 
-  //3. if image is not uploaded then delete the created cabin.
-  if (imgUploadingError) {
-    await supabase.from("cabins").delete().eq("id", data.id);
-    throw new Error(
-      "Cabin image could not be uploaded and the cabin was not created"
-    );
+    // 4. find the previousely added image in database and delete it, when new image is provided in edit cabin... (only in edit session)
+    if (id) {
+      const { data: images } = await supabase.storage.from("cabins").list();
+      const existingImage = images.find(
+        (img) =>
+          img.name === previouseImage.slice(data.image.lastIndexOf("/") + 1)
+      );
+
+      await supabase.storage.from("cabins").remove([existingImage.name]);
+    }
   }
 
   return data;
