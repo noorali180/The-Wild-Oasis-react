@@ -1,5 +1,5 @@
 
-function SortBy() {
+function SortBy({options}) {
     return (
         <div>
             SortBy
