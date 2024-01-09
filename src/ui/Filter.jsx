@@ -16,7 +16,7 @@ const FilterButton = styled.button`
   border: none;
 
   ${(props) =>
-    props.active &&
+    props.active === "true" &&
     css`
       background-color: var(--color-brand-600);
       color: var(--color-brand-50);
@@ -51,8 +51,9 @@ function Filter({ filterName, filterOptions }) {
       {filterOptions.map((option) => (
         <FilterButton
           key={option.value}
-          active={option.value === activeFilter}
           onClick={() => handler(option.value)}
+          active={(option.value === activeFilter).toString()}
+          disabled={option.value === activeFilter}
         >
           {option.label}
         </FilterButton>

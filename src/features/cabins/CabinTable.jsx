@@ -21,9 +21,9 @@ function CabinTable() {
   let filteredCabins;
   if (filterValue === "all") filteredCabins = cabins;
   if (filterValue === "no-discount")
-    filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
+    filteredCabins = cabins?.filter((cabin) => cabin.discount === 0);
   if (filterValue === "with-discount")
-    filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
+    filteredCabins = cabins?.filter((cabin) => cabin.discount > 0);
 
   if (isLoading) return <Spinner />;
 
