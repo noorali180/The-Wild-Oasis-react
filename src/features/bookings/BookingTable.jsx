@@ -12,7 +12,7 @@ import Pagination from "../../ui/Pagination";
 function BookingTable() {
   // const bookings = [];
 
-  const { isLoading, error, bookings } = useBookings();
+  const { isLoading, error, bookings, count } = useBookings();
 
   // NOTE: It is the way to filter the data on client side (also we did for cabins table), for bookings table we will do server side filtering directly from our database (supabase) ...
 
@@ -53,7 +53,7 @@ function BookingTable() {
     return <PageNotFound />;
   }
 
-  if (bookings.length === 0) return <Empty resource={"bookings"} />;
+  if (!bookings) return <Empty resource={"bookings"} />;
 
   return (
     <Menus>
@@ -77,7 +77,7 @@ function BookingTable() {
         />
 
         <Table.Footer>
-          <Pagination count={bookings.length} />
+          <Pagination count={count} />
         </Table.Footer>
       </Table>
     </Menus>

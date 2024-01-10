@@ -20,16 +20,19 @@ export function useBookings() {
   const [field, direction] = sortByValue.split("-");
   const sortBy = { field, direction };
 
+  // 3. page
+  const page = !searchParams.get("page") ? 1 : +searchParams.get("page");
+
   const {
     isLoading,
-    data: bookings,
+    data: { data: bookings, count } = {},
     error,
   } = useQuery({
-    queryKey: ["bookings", filter, sortBy],
-    queryFn: () => getBookings({ filter, sortBy }),
+    queryKey: ["bookings", filter, sortBy, page],
+    queryFn: () => getBookings({ filter, sortBy, page }),
   });
 
   // Note: queryKey is just like the dependency array of useEffect hook...
 
-  return { isLoading, error, bookings };
+  return { isLoading, error, bookings, count };
 }
