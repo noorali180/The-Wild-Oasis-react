@@ -15,13 +15,18 @@ export function useBookings() {
 
   // {name: 'totalPrice', value: 5000, method: 'gte'}
 
+  // 2. sort
+  const sortByValue = searchParams.get("sortBy") || "startDate-desc";
+  const [field, direction] = sortByValue.split("-");
+  const sortBy = { field, direction };
+
   const {
     isLoading,
     data: bookings,
     error,
   } = useQuery({
-    queryKey: ["bookings", filter],
-    queryFn: () => getBookings({ filter }),
+    queryKey: ["bookings", filter, sortBy],
+    queryFn: () => getBookings({ filter, sortBy }),
   });
 
   // Note: queryKey is just like the dependency array of useEffect hook...
