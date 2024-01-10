@@ -96,7 +96,7 @@ function Body({ data, render }) {
   if (data?.length === 0)
     return <Empty>{"You have nothing to show right now ;)"}</Empty>;
 
-  return <StyledBody>{data.map(render)}</StyledBody>;
+  return <StyledBody>{data?.map(render)}</StyledBody>;
 }
 
 Table.Header = Header;

@@ -15,7 +15,7 @@ function BookingTable() {
   const [searchParams] = useSearchParams();
 
   // 1) FILTER
-  const filterValue = searchParams.get("status");
+  const filterValue = searchParams.get("status") || "all";
 
   let filteredBookings;
   if (filterValue === "all") filteredBookings = bookings;
@@ -39,9 +39,22 @@ function BookingTable() {
     return <PageNotFound />;
   }
 
+  // 2) SORT
+  const sortByValue = searchParams.get("sortBy") || "";
+  const [field, direction] = sortByValue.split("-");
+  const modifier = direction === "asc" ? 1 : -1;
+  const sortedBookings = filteredBookings?.sort(
+    (a, b) => (new Date(a[field]) - new Date(b[field])) * modifier
+  );
+
   ///////////////////////////////////////////////////////////////////
 
   if (bookings.length === 0) return <Empty resource={"bookings"} />;
+
+  // const dates = bookings.map(booking => booking.startDate)
+  // const sorted = dates.slice().sort((a, b) => a - b);
+  // console.log("act arr: ", dates);
+  // console.log("sorted arr: ", sorted)
 
   return (
     <Menus>
@@ -57,7 +70,8 @@ function BookingTable() {
 
         <Table.Body
           // data={bookings}
-          data={filteredBookings}
+          // data={filteredBookings}
+          data={sortedBookings}
           render={(booking) => (
             <BookingRow key={booking.id} booking={booking} />
           )}
