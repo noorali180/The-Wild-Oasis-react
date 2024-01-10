@@ -6,31 +6,44 @@ import Empty from "../../ui/Empty";
 import { useBookings } from "../bookings/hooks/useBookings";
 import Spinner from "../../ui/Spinner";
 import PageNotFound from "../../pages/PageNotFound";
-import { useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 
 function BookingTable() {
   // const bookings = [];
 
   const { isLoading, error, bookings } = useBookings();
-  const [searchParams] = useSearchParams();
 
-  // 1) FILTER
-  const filterValue = searchParams.get("status") || "all";
+  // NOTE: It is the way to filter the data on client side (also we did for cabins table), for bookings table we will do server side filtering directly from our database (supabase) ...
 
-  let filteredBookings;
-  if (filterValue === "all") filteredBookings = bookings;
-  if (filterValue === "checked-in")
-    filteredBookings = bookings?.filter(
-      (booking) => booking.status === "checked-in"
-    );
-  if (filterValue === "checked-out")
-    filteredBookings = bookings?.filter(
-      (booking) => booking.status === "checked-out"
-    );
-  if (filterValue === "unconfirmed")
-    filteredBookings = bookings?.filter(
-      (booking) => booking.status === "unconfirmed"
-    );
+  // const [searchParams] = useSearchParams();
+
+  // // 1) FILTER
+  // const filterValue = searchParams.get("status") || "all";
+
+  // let filteredBookings;
+  // if (filterValue === "all") filteredBookings = bookings;
+  // if (filterValue === "checked-in")
+  //   filteredBookings = bookings?.filter(
+  //     (booking) => booking.status === "checked-in"
+  //   );
+  // if (filterValue === "checked-out")
+  //   filteredBookings = bookings?.filter(
+  //     (booking) => booking.status === "checked-out"
+  //   );
+  // if (filterValue === "unconfirmed")
+  //   filteredBookings = bookings?.filter(
+  //     (booking) => booking.status === "unconfirmed"
+  //   );
+
+  // // 2) SORT
+  // const sortByValue = searchParams.get("sortBy") || "";
+  // const [field, direction] = sortByValue.split("-");
+  // const modifier = direction === "asc" ? 1 : -1;
+  // const sortedBookings = filteredBookings?.sort(
+  //   (a, b) => (new Date(a[field]) - new Date(b[field])) * modifier
+  // );
+
+  ///////////////////////////////////////////////////////////////////
 
   if (isLoading) return <Spinner />;
 
@@ -39,22 +52,7 @@ function BookingTable() {
     return <PageNotFound />;
   }
 
-  // 2) SORT
-  const sortByValue = searchParams.get("sortBy") || "";
-  const [field, direction] = sortByValue.split("-");
-  const modifier = direction === "asc" ? 1 : -1;
-  const sortedBookings = filteredBookings?.sort(
-    (a, b) => (new Date(a[field]) - new Date(b[field])) * modifier
-  );
-
-  ///////////////////////////////////////////////////////////////////
-
   if (bookings.length === 0) return <Empty resource={"bookings"} />;
-
-  // const dates = bookings.map(booking => booking.startDate)
-  // const sorted = dates.slice().sort((a, b) => a - b);
-  // console.log("act arr: ", dates);
-  // console.log("sorted arr: ", sorted)
 
   return (
     <Menus>
@@ -69,9 +67,9 @@ function BookingTable() {
         </Table.Header>
 
         <Table.Body
-          // data={bookings}
+          data={bookings}
           // data={filteredBookings}
-          data={sortedBookings}
+          // data={sortedBookings}
           render={(booking) => (
             <BookingRow key={booking.id} booking={booking} />
           )}
