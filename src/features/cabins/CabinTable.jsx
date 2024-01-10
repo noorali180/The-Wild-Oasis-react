@@ -6,6 +6,7 @@ import Table from "../../ui/Table";
 import { useCabins } from "./hooks/useCabins";
 import Menus from "../../ui/Menus";
 import { useSearchParams } from "react-router-dom";
+import Empty from "../../ui/Empty";
 
 function CabinTable() {
   // const {
@@ -13,6 +14,9 @@ function CabinTable() {
   //   data: cabins,
   //   error,
   // } = useQuery({ queryKey: ["cabins"], queryFn: getCabins });
+
+  // const cabins = [];
+
   const { isLoading, error, cabins } = useCabins();
   const [searchParams] = useSearchParams();
 
@@ -42,6 +46,8 @@ function CabinTable() {
     console.error(error);
     return <PageNotFound />;
   }
+
+  if (cabins.length === 0) return <Empty resource={"cabins"} />;
 
   return (
     <Menus>
