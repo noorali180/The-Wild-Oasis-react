@@ -2,8 +2,19 @@ import BookingRow from "./BookingRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 
+import { useBookings } from "../bookings/hooks/useBookings";
+import Spinner from "../../ui/Spinner";
+import PageNotFound from "../../pages/PageNotFound";
+
 function BookingTable() {
-  const bookings = [];
+  const { isLoading, error, bookings } = useBookings();
+
+  if (isLoading) return <Spinner />;
+
+  if (error) {
+    console.error(error);
+    return <PageNotFound />;
+  }
 
   return (
     <Menus>
