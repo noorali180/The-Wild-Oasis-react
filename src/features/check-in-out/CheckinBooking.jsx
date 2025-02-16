@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BookingDataBox from "../../features/bookings/BookingDataBox";
+import BookingDataBox from "../bookings/BookingDataBox";
 
 import Row from "../../ui/Row";
 import Heading from "../../ui/Heading";
@@ -8,6 +8,13 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
+import { useBooking } from "../bookings/hooks/useBooking";
+import Spinner from "../../ui/Spinner";
+import PageNotFound from "../../pages/PageNotFound";
+import Checkbox from "../../ui/Checkbox";
+import { useEffect, useState } from "react";
+import { formatCurrency } from "../../utils/helpers";
+import { useCheckIn } from "./hooks/useCheckIn";
 
 const Box = styled.div`
   /* Box */
@@ -17,21 +24,37 @@ const Box = styled.div`
   padding: 2.4rem 4rem;
 `;
 
-function CheckinBooking() {
+function CheckInBooking() {
+  const { isLoading, error, booking } = useBooking();
   const moveBack = useMoveBack();
 
-  const booking = {};
+  const { checkIn, isCheckingIn } = useCheckIn();
+
+  const [confirmIsPaid, setConfirmIsPaid] = useState(false);
+  const [addBreakfast, setAddBreakfast] = useState(false);
+
+  function handleCheckIn() {
+    if (!confirmIsPaid) return;
+    checkIn();
+  }
+
+  useEffect(() => {
+    setConfirmIsPaid(Boolean(booking?.isPaid));
+  }, [booking]);
+
+  if (isLoading) return <Spinner />;
+
+  if (error) return <PageNotFound />;
 
   const {
     id: bookingId,
     guests,
     totalPrice,
-    numGuests,
-    hasBreakfast,
-    numNights,
+    // numGuests,
+    // hasBreakfast,
+    // numNights,
+    // isPaid,
   } = booking;
-
-  function handleCheckin() {}
 
   return (
     <>
@@ -42,8 +65,39 @@ function CheckinBooking() {
 
       <BookingDataBox booking={booking} />
 
+      <Box>
+        <Checkbox
+          checked={addBreakfast}
+          onChange={() => {
+            setAddBreakfast((add) => !add);
+            setConfirmIsPaid(false);
+          }}
+          disabled={confirmIsPaid}
+          id={"breakfast"}
+        >
+          Want to add breakfast for X?
+        </Checkbox>
+      </Box>
+
+      <Box>
+        <Checkbox
+          checked={confirmIsPaid}
+          onChange={() => setConfirmIsPaid((confirm) => !confirm)}
+          disabled={confirmIsPaid}
+          id={"confirm"}
+        >
+          I confirm that {guests.fullName} has paid the total amount of{" "}
+          {formatCurrency(totalPrice)}
+        </Checkbox>
+      </Box>
+
       <ButtonGroup>
-        <Button onClick={handleCheckin}>Check in booking #{bookingId}</Button>
+        <Button
+          onClick={handleCheckIn}
+          disabled={!confirmIsPaid || isCheckingIn}
+        >
+          Check in booking #{bookingId}
+        </Button>
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
@@ -52,4 +106,4 @@ function CheckinBooking() {
   );
 }
 
-export default CheckinBooking;
+export default CheckInBooking;

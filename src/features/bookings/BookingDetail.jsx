@@ -9,6 +9,11 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
+import { useBooking } from "./hooks/useBooking";
+import Spinner from "../../ui/Spinner";
+import { statusToTagName } from "../../utils/constants";
+import PageNotFound from "../../pages/PageNotFound";
+import { useNavigate } from "react-router-dom";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -17,22 +22,22 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  const booking = {};
-  const status = "checked-in";
-
+  const { isLoading, booking, error } = useBooking();
   const moveBack = useMoveBack();
 
-  const statusToTagName = {
-    unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
-  };
+  const navigate = useNavigate();
+
+  if (isLoading) return <Spinner />;
+
+  if (error) return <PageNotFound />;
+
+  const { id: bookingId, status } = booking;
 
   return (
     <>
       <Row type="horizontal">
         <HeadingGroup>
-          <Heading as="h1">Booking #X</Heading>
+          <Heading as="h1">Booking #{bookingId}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
@@ -41,6 +46,9 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+        <Button onClick={() => navigate(`/check-in/${bookingId}`)}>
+          Check In
+        </Button>
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>

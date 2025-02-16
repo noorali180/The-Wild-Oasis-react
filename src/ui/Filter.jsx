@@ -43,6 +43,8 @@ function Filter({ filterName, filterOptions }) {
 
   function handler(value) {
     searchParams.set(filterName, value);
+    // setting page back to 1, if the value of filter and sortBy will change in the searchParams from URL...
+    if (searchParams.get("page")) searchParams.set("page", 1);
     setSearchParams(searchParams);
   }
 

@@ -13,6 +13,8 @@ import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./ui/AppLayout/AppLayout.jsx";
 import { Toaster } from "react-hot-toast";
+import Booking from "./pages/Booking.jsx";
+import CheckIn from "./pages/Checkin.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +37,8 @@ function App() {
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="booking/:id" element={<Booking />} />
+            <Route path="check-in/:id" element={<CheckIn />} />
             <Route path="cabins" element={<Cabins />} />
             <Route path="users" element={<Users />} />
             <Route path="settings" element={<Settings />} />
@@ -72,4 +76,4 @@ function App() {
 
 export default App;
 
-// NOTe: in toastOptions object sucess have a object of duration which defines how long a sucess message should appear on the screen, same goes with error object...
+// NOTe: in toastOptions object success have a object of duration which defines how long a success message should appear on the screen, same goes with error object...
