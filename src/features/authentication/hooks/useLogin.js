@@ -14,7 +14,7 @@ export function useLogin() {
       navigate("/");
     },
     onError: () => {
-      toast.error("User do not exist try to sign up please");
+      toast.error("Provided email or password is not correct");
     },
   });
 

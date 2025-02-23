@@ -8,7 +8,7 @@ export async function login({ email, password }) {
 
   if (error) {
     console.error(error);
-    throw new Error("Attempt to login failed");
+    throw new Error(error?.message);
   }
 
   return data;
