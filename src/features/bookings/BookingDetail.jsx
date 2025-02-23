@@ -14,6 +14,10 @@ import Spinner from "../../ui/Spinner";
 import { statusToTagName } from "../../utils/constants";
 import PageNotFound from "../../pages/PageNotFound";
 import { useNavigate } from "react-router-dom";
+import { useCheckOut } from "../check-in-out/hooks/useCheckOut";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useDeleteBooking } from "./hooks/useDeleteBooking";
+import Modal from "../../ui/Modal";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -23,6 +27,8 @@ const HeadingGroup = styled.div`
 
 function BookingDetail() {
   const { isLoading, booking, error } = useBooking();
+  const { checkOut, isCheckingOut } = useCheckOut();
+  const { deleteBooking, isDeleting } = useDeleteBooking();
   const moveBack = useMoveBack();
 
   const navigate = useNavigate();
@@ -46,9 +52,38 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
-        <Button onClick={() => navigate(`/check-in/${bookingId}`)}>
-          Check In
-        </Button>
+        {status === "unconfirmed" && (
+          <Button onClick={() => navigate(`/check-in/${bookingId}`)}>
+            Check In
+          </Button>
+        )}
+
+        {status === "checked-in" && (
+          <Button onClick={() => checkOut(bookingId)} disabled={isCheckingOut}>
+            Check Out
+          </Button>
+        )}
+
+        <Modal>
+          <Modal.Open opens="confirm-delete">
+            <Button variation="danger">Delete booking</Button>
+          </Modal.Open>
+
+          <Modal.Window name="confirm-delete">
+            <ConfirmDelete
+              resourceName="booking"
+              disabled={isDeleting}
+              onConfirm={() =>
+                deleteBooking(bookingId, {
+                  onSuccess: () => {
+                    navigate(-1);
+                  },
+                })
+              }
+            />
+          </Modal.Window>
+        </Modal>
+
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
