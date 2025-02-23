@@ -1,38 +1,75 @@
-import { useState } from "react";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
+import { useForm } from "react-hook-form";
+import { useLogin } from "./hooks/useLogin";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { login, isLoading } = useLogin();
 
-  function handleSubmit() {}
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: "noorali@gmail.com",
+      password: "Secret123",
+    },
+  });
+
+  function onSubmit(data) {
+    const { email, password } = data;
+
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          setValue("email", "");
+          setValue("password", "");
+        },
+      }
+    );
+  }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormRowVertical label="Email address">
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FormRowVertical label="Email address" error={errors?.email?.message}>
         <Input
           type="email"
           id="email"
           // This makes this form better for password managers
           autoComplete="username"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          disabled={isLoading}
+          {...register("email", { required: "Please provide an email" })}
         />
       </FormRowVertical>
-      <FormRowVertical label="Password">
+      <FormRowVertical label="Password" error={errors?.password?.message}>
         <Input
           type="password"
           id="password"
           autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          disabled={isLoading}
+          {...register("password", {
+            required: "Please provide a password",
+            minLength: {
+              value: 6,
+              message: "Password must be greater than six letters",
+            },
+            pattern: {
+              value: /^\S+$/,
+              message: "Password should not contain spaces",
+            },
+          })}
         />
       </FormRowVertical>
       <FormRowVertical>
-        <Button size="large">Login</Button>
+        <Button size="large" type="submit" x>
+          {isLoading ? <SpinnerMini /> : "Login"}
+        </Button>
       </FormRowVertical>
     </Form>
   );
