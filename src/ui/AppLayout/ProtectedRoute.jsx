@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useGetUser } from "../../features/authentication/hooks/useGetUser";
+import { useUser } from "../../features/authentication/hooks/useUser";
 import Spinner from "../../ui/Spinner";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -17,7 +17,7 @@ function ProtectedRoute({ children }) {
   const navigate = useNavigate();
 
   // 1. Fetch current user from the backend...
-  const { isLoading, isAuthenticated } = useGetUser();
+  const { isLoading, isAuthenticated } = useUser();
 
   // 3. User is not authenticated, navigate to the login page.
   useEffect(() => {
