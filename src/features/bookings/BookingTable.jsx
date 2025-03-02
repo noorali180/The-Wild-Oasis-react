@@ -53,7 +53,7 @@ function BookingTable() {
     return <PageNotFound />;
   }
 
-  if (!bookings) return <Empty resource={"bookings"} />;
+  if (!bookings.length) return <Empty resource={"bookings"} />;
 
   return (
     <Menus>
