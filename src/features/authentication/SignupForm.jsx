@@ -8,7 +8,7 @@ import Spinner from "../../ui/Spinner";
 
 // Email regex: /\S+@\S+\.\S+/
 
-function SignupForm() {
+function SignupForm({ type }) {
   const {
     register,
     formState: { errors },
@@ -35,7 +35,7 @@ function SignupForm() {
   if (isLoading) return <Spinner />;
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} type={type}>
       <FormRow label="Full name" error={errors?.fullName?.message}>
         <Input
           type="text"
