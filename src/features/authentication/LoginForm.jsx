@@ -16,8 +16,8 @@ function LoginForm() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "nooralib180@gmail.com",
-      password: "Noorali123",
+      email: "",
+      password: "",
     },
   });
 
