@@ -25,7 +25,7 @@ const Box = styled.div`
   padding: 2.4rem 4rem;
 `;
 
-function CheckInBooking() {
+function CheckinBooking() {
   const { isLoading, error, booking } = useBooking();
   const moveBack = useMoveBack();
 
@@ -130,4 +130,4 @@ function CheckInBooking() {
   );
 }
 
-export default CheckInBooking;
+export default CheckinBooking;
