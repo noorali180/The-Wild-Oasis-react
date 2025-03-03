@@ -18,6 +18,7 @@ import { useCheckOut } from "../check-in-out/hooks/useCheckOut";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeleteBooking } from "./hooks/useDeleteBooking";
 import Modal from "../../ui/Modal";
+import Empty from "../../ui/Empty";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -34,6 +35,8 @@ function BookingDetail() {
   const navigate = useNavigate();
 
   if (isLoading) return <Spinner />;
+
+  if (!booking) return <Empty resource="booking" />;
 
   if (error) return <PageNotFound />;
 

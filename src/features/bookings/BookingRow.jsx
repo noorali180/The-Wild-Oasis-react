@@ -12,7 +12,6 @@ import {
   HiArrowDownOnSquare,
   HiArrowUpOnSquare,
   HiEye,
-  HiPencil,
   HiTrash,
 } from "react-icons/hi2";
 import ConfirmDelete from "../../ui/ConfirmDelete";
@@ -122,10 +121,6 @@ function BookingRow({
                 Check Out
               </Menus.Button>
             )}
-
-            <Modal.Open opens={"edit-booking"}>
-              <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
-            </Modal.Open>
 
             <Modal.Open opens={"confirm-delete"}>
               <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
